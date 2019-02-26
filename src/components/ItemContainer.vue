@@ -80,8 +80,7 @@ export default {
     }
   },
   created () {
-    if (this.tag === 'home') {
-      console.log(this.tag)
+    if (this.tag === 'home') {     
       this.initData()
     }
   },

@@ -73,12 +73,12 @@ export default {
     },
     // 分数提示
     scoreTip () {
-      let tipsIndex = this.answerNum - 1 > 0 ? this.answerNum : 0
+      let tipsIndex = this.answerNum - 1 > 0 ? this.answerNum - 1 : 0
       return this.tipsArr[tipsIndex];
     },
     // 称号
     epithetTip () {
-      let tipsIndex = this.answerNum - 1 > 0 ? this.answerNum : 0
+      let tipsIndex = this.answerNum - 1 > 0 ? this.answerNum - 1 : 0
       return this.epithetArr[tipsIndex];
     }
   },

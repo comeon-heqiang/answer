@@ -14,8 +14,17 @@ export default {
 
     }
   },
+  mounted () {
+   
+  },
   components: {
     answerComponent
+  },
+  methods: {
+    
+  },
+  beforeDestroy () {
+
   }
 }
 </script>

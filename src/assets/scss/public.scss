@@ -1,0 +1,13 @@
+.btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: .8rem;
+  button {
+    background: url(../images/bg-btn1.png) 0 0 /100% 100%;
+    color: #fff;
+    width: 3.2rem;
+    height: 1rem;
+    font-size: 0.36rem;
+    margin:0 0.2rem;
+  }
+}

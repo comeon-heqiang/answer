@@ -1,52 +1,12 @@
 <template>
   <div>
     <answer-header :tag="tag"></answer-header>
-    <!-- 首页 -->
-    <div
-      v-if="tag==='home'"
-      class="user-info"
-    >
-      <div class="item">
-        <h2>请选择头像</h2>
-        <ul>
-          <li
-            v-for="(item,index) of userPic"
-            :key="index"
-            :class="{'on':picActive==index}"
-            @click="choosePic(item,index)"
-          >
-            <img
-              :src="item.pic"
-              alt=""
-            >
-          </li>
-        </ul>
-      </div>
-      <!-- <div class="item">
-          <h2>请输入昵称</h2>
-          <input
-            type="text"
-            v-model="user.name"
-          >
-        </div> -->
-      <div class="btn-group">
-        <button
-          @click="start"
-          class="btn-submit"
-        >开始答题</button>
-      </div>
-
-    </div>
 
     <!-- 答题 -->
-    <div
-      v-else
-      class="answer"
-    >
+    <div class="answer">
       <div class="question">
         {{itemNum}}.{{activeItem.title}}
       </div>
-      <!-- 渲染题目 -->
       <ul>
         <li
           v-for="(item,index) in activeItem.options"
@@ -70,22 +30,25 @@ export default {
   props: ['tag'],
   data () {
     return {
-      picActive: 0, //选择的头像
-      showStandard: false,
-      user: {
-        name: '',
-        pic: ''
-      },
-      timer: ''
+      showStandard: false,     //显示正确答案
+      timer: '',
+      answerDetail: '', //题目详情
+      type: '' //答题类型
     }
   },
   created () {
-    if (this.tag === 'home') {     
-      this.initData()
+    // 获取答题类型
+    if (localStorage.getItem('answerType')) {
+      this.type = localStorage.getItem('answerType')
     }
+    this.answerDetail = this.answerType.filter(item => {
+      return item.pid == this.type
+    });
+    this.answerDetail = this.answerDetail[0].answerDetail
+
   },
   computed: {
-    ...mapState(['userPic', 'answerDetail', 'itemNum']),
+    ...mapState(['userPic', 'answerType', 'itemNum']),
     activeItem () {
       return this.answerDetail[this.itemNum - 1];
     }
@@ -129,7 +92,7 @@ export default {
         this.$refs[index][0].classList.add('error')
       }
       // 记录答案
-      this.recordAnswer(item.id);
+      this.recordAnswer(item.is_standard_answer);
 
       // 到达最后一题 跳转分数页面
 
@@ -138,68 +101,18 @@ export default {
         this.showStandard = false
         this.$refs[index][0].classList.remove('error')
         if (this.itemNum >= this.answerDetail.length) {
-          this.$router.push({ path: '/score' })        
+          this.$router.push({ path: '/score' })
         }
         else {
           this.nextQuestion();
         }
-      }, 700);
-    },
-    // 开始答题
-    start () {
-      if (!this.user.pic) {
-        this.user.pic = this.userPic[0].pic
-      }
-      this.userInfo(this.user);
-      this.$router.push({ path: '/item' })
+      }, 800);
     }
-  },
-  beforeDestroy () {
-  
   }
 }
 </script>
 
 <style scoped lang="scss">
-.main {
-  .user-info {
-    padding-top: 1.6rem;
-    .item {
-      text-align: center;
-      margin-bottom: 0.8rem;
-      h2 {
-        font-size: 0.36rem;
-        margin-bottom: 0.4rem;
-      }
-      input {
-        background: #fac172;
-        color: #fff;
-        line-height: 0.7rem;
-        border-radius: 5px;
-        padding: 0 0.1rem;
-        width: 4.6rem;
-      }
-      ul {
-        display: flex;
-        justify-content: center;
-        li {
-          margin: 0 0.1rem;
-          border: 2px solid transparent;
-          border-radius: 50%;
-          &.on {
-            border-color: #ff6868;
-          }
-          img {
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-          }
-        }
-      }
-    }
-   
-  }
-}
 // 题目
 .answer {
   margin: 0.8rem 0.4rem;
@@ -218,12 +131,12 @@ export default {
     margin-top: 20px;
     li {
       background: url("../assets/images/bg-answer-item.png") 0 0 /100% 100%;
-      color: #000;
+      color: #d6c258;
       width: 4.2rem;
       line-height: 1rem;
       margin-top: 0.2rem;
       font-size: 0.32rem;
-      padding-left: 1.2rem;
+      padding-left: .6rem;
       box-sizing: border-box;
       position: relative;
       &::after {

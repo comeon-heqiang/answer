@@ -1,9 +1,6 @@
 <template>
-  <div class="title">
-    <div v-if="tag==='home'">
-      首页
-    </div>
-    <div v-else-if="tag==='item'">
+  <div class="title">    
+    <div v-if="tag==='item'">
       <img
         :src="user.pic"
         alt=""

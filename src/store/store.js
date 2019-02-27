@@ -2,11 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
 import actions from './actions.js'
-import answerDetail from '../data/answerDetail'
+import {answerType,category} from '../data/answerDetail'
 Vue.use(Vuex)
 
 let state = {
   itemNum: 1, //第几题
+  // 栏目
+  category:category,
+  categoryType:1, //选择的答题类型
   // 用户信息
   user: {
     id: 1,
@@ -28,8 +31,7 @@ let state = {
     pic: require('../assets/images/user4.png')
   }],
   // 题目
-  answerDetail:answerDetail,
-  correctAnswer: ['格格巫', '法国人','梵蒂冈','指猴','美国'], //正确答案
+  answerType:answerType,  
   timer: '', //答题时间
   // 保存答案
   answerId: []
